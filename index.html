@@ -4,31 +4,153 @@
         <meta charset="utf-8">
         <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="js/handlebars-v3.0.0.js"></script>
-        <link rel="stylesheet" type="text/css" href="main.css">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     </head>
     <body>
-        <div id="input-form">
-            Order ID: <input type="text" name="id" placeholder="140121VVJN5C">
-            Time: <input type="text" name="time" placeholder="2014-01-21 18:22">
-            Name: <input type="text" name="name" placeholder="张三">
-            Phone: <input type="text" name="phone" placeholder="18812345678">
-            Address: <input type="text" name="address" placeholder="北京 北京市 海淀区 清华大学紫荆公寓2号楼2单元505A">
-            <button id="submit">Submit</button>
+        <div class="container">
+
+            <hr />
+
+            <div class="row" id="info-form">
+                <div class="col-md-offset-2 col-md-4 form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Order ID</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control col-sm-10" name="id" value="140121VVJN5C">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Time</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control col-sm-10" name="time" value="2014-01-21 18:22">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Type</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="type">
+                                <option value="/yihaodian.html" selected>一号店</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control col-sm-10" name="name" value="张三">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Phone</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control col-sm-10" name="phone" value="18812345678">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control col-sm-10" name="address" value="北京 北京市 海淀区 清华大学紫荆公寓2号楼2单元505A">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div id="item-form-list">
+            </div>
+
+            <script type="text/x-data" id="item-form-html">
+                <div class="form-horizontal row item-form">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="id" value="0133135054">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="name" value="百宝源 新鲜水果  双流 红颜草莓  2盒 产地直销当天采摘">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Price</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="price" value="58">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Count</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="count" value="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </script>
+
+            <hr />
+
+            <div class="center-block" style="width: 200px;">
+                <button id="add" class="btn btn-default">Add</button>
+                <button id="del" class="btn btn-default">Del</button>
+                <button id="submit" class="btn btn-primary">Submit</button>
+            </div>
         </div>
+
         <iframe id="content" frameBorder="0"></iframe>
         <script type="text/javascript">
             $("#submit").click(function(e){
-                $.get("/yihaodian.html", function(data){
+                var source = $("select[name='type']").val();
+                $.get(source, function(data){
                     var template = Handlebars.compile(data);
                     var params = {};
-                    $('#input-form input').each(function(i, v){
+                    $('#info-form input').each(function(i, v){
                         var $v = $(v);
                         params[$v.attr("name")] = $v.val();
                     });
+                    params["total_price"] = 0.0;
+                    var items = [];
+                    $('#item-form-list .item-form').each(function(i, v){
+                        var $v = $(v);
+                        var item = {};
+                        $("input", $v).each(function(j, x){
+                            var $x = $(x);
+                            item[$x.attr("name")] = $x.val();
+                        });
+                        item["total_price"] = parseFloat(item["price"]) * parseInt(item["count"]);
+                        params["total_price"] += item["total_price"];
+
+                        item["total_price"] = item["total_price"].toFixed(2);
+                        items.push(item);
+                    });
+                    params["items"] = items;
+                    params["total_price"] = params["total_price"].toFixed(2);
+                    console.log(params);
                     var html = template(params);
                     $("#content").contents().find('html').html(html);
                 });
             });
+            var add_item = function(e){
+                var html = $('#item-form-html').html();
+                $('#item-form-list').append(html);
+            };
+            $('#add').click(add_item);
+            $('#del').click(function(e){
+                $('#item-form-list').children().last().remove();
+            });
+
+            add_item();
         </script>
     </body>
 </html>

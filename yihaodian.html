@@ -59,23 +59,25 @@
                         <th class="t5">数量</th>
                         <th class="t7">商品金额</th>
                     </tr>
-                                        <tr>
-                                            <td>0133135054</td>
-                                            <td><div class="p-name">百宝源 新鲜水果  双流 红颜草莓  2盒 产地直销当天采摘</div></td>
-                                            <td>
-                                                    ¥58
-                                            </td>
-                                            <td>1</td>
-                                            <td>
-                                                    ¥58
-                                            </td>
-                                        </tr>                                   
+                    {{#each items}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td><div class="p-name">{{name}}</div></td>
+                        <td>
+                            ¥{{price}}
+                        </td>
+                        <td>{{count}}</td>
+                        <td>
+                            ¥{{total_price}}
+                        </td>
+                    </tr>                                   
+                    {{/each}}
                    </tbody></table>
                    <div class="m3"></div>
             </div>
     <div class="m3">
         <div class="d1">
-            商品金额58元 
+            商品金额{{total_price}}元 
             
             
             
@@ -85,7 +87,7 @@
         </div>
         <div class="d2">
             <strong>
-                    <label>订单金额</label><span><u>¥ 58.00</u></span>
+                    <label>订单金额</label><span><u>¥ {{total_price}}</u></span>
             </strong>
         </div>
     </div>
