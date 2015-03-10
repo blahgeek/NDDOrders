@@ -1,0 +1,84 @@
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>
+    订单打印
+</title>
+    <style type="text/css">
+* {margin:0;padding:0}
+body {font:12px/1.5  "宋体";color:#333}
+.w{width:100%}
+.m1 td{height:0.6cm;line-height:0.6cm;}
+.t3,.t7,.t6{width:1.6cm}
+.t1{width:6.8cm}
+.t5{width:1.1cm}
+.tb4{border-collapse:collapse;border:1px solid #000}
+.tb4 th, .tb4 td,.d1{border:1px solid #000}
+.tb4 td {padding:1px}
+.tb4 th {height:0.6cm;font-weight:normal}
+.m1,.m2,.m3{padding-top:10px}
+.d1{padding:10px}
+.d2{text-align:right;padding:10px 0;font-size:14px}
+.logo{border-bottom:1px solid #ccc;padding:10px}
+.footer{border-top:1px solid #ccc;text-align:center;padding:10px}
+.v-h{ text-align:center}
+.m2{padding-left:1px}
+</style>
+<style type="text/css" media="print">
+.v-h {display:none;}
+</style>
+
+</head>
+<body>
+    <form name="form1">
+        <div class="v-h"><input name="" type="button" value="打印" onclick="javascript:window.print();" /></div>
+        <div class="w">
+            <div class="logo"><img width="170" height="60" src="http://misc.360buyimg.com/lib/img/e/logo-2013-b.png" alt="京东商城" /></div>
+            <div class="m1">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb1">
+                    <tr>
+                        <td class="t1"><strong>订单编号：</strong>{{id}}</td>
+                        <td class="t2"><strong>订购时间：</strong>{{time}}</td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb2">
+                    <tr>
+                        <td class="t1"><strong>客户姓名：</strong>{{name}}</td>
+                        <td class="t2"><strong>联系方式：</strong>{{phone}}</td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb3">
+                    <tr>
+                        <td class="t8"><strong>客户地址：</strong>{{address}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="m2">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb4">
+                    <tr>
+                        <th class="t3">商品编号</th>
+                        <th class="t4">商品名称</th>
+                        <th class="t5">数量</th>
+                        <th class="t7">商品金额</th>
+                    </tr>
+                    {{#each items}}
+                                                                    <tr>
+                            <td>{{id}}</td>
+                            <td><div class="p-name">{{name}}</div></td>
+                            <td>{{count}}</td>
+                            <td>￥{{total_price}}</td>
+                        </tr>
+
+                    {{/each}}
+                                                        </table>
+        </div>
+        <div class="m3">
+            <div class="d1">
+            商品总金额：{{total_price}}元 + 运费：0.00元 - 优惠：0.00元 - 余额：0.00元
+            </div>
+            <div class="d2"><strong>订单支付金额：￥{{total_price}}</strong></div>
+        </div>
+        <div class="footer">
+            <p class="p1">家用电器、手机数码、电脑产品、日用百货，尽在京东商城</p>
+        </div>
+    </div>
+    </form>
+
+</body>
